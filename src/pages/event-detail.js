@@ -6,7 +6,7 @@ function EventDetailPage() {
 
   return (
     <>
-      <EventItem event={} />
+      <EventItem /* event={} */ />
 
       <p><Link to=".." relative='path'>Back</Link></p>
     </>
