@@ -27,7 +27,7 @@ import EventDetailPage, {loader as eventDetailLoader} from './pages/event-detail
 import EventsPage, { loaderUpToUs as eventsLoader } from './pages/events';
 import EventsRootLayout from './pages/events-root';
 import HomePage from './pages/home';
-import NewEventPage from './pages/new-event';
+import NewEventPage, { action as newEventAction } from './pages/new-event';
 import RootLayout from './pages/root';
 import ErrorPage from './pages/error';
 
@@ -53,9 +53,17 @@ const router = createBrowserRouter([
           //   }
           // }
            },
-          { path: ':eventId', element: <EventDetailPage />, loader: eventDetailLoader },
-          { path: 'new', element: <NewEventPage /> },
-          { path: ':eventId/edit', element: <EditEventPage /> },
+           { // this is a nested parent for the events.?
+            path: ":eventId",
+            id: "event-detail", //this is for the useRouteLoaderData
+            //we don't add an element as we dont want any shared layouts
+            loader: eventDetailLoader, //and adding here this loader makes accessible to all children elements by using the useLoaderData() hook there
+            children: [
+              { index: true/*or path:""*/, element: <EventDetailPage />},
+              { path: 'edit', element: <EditEventPage /> },
+            ],
+           },
+          { path: 'new', element: <NewEventPage />, action: newEventAction },
         ],
       },
     ],
