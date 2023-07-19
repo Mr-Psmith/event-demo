@@ -1,12 +1,12 @@
-import { json, useLoaderData, usena } from 'react-router-dom';
+import { json, useLoaderData } from 'react-router-dom';
 import EventsList from '../components/EventsList';
 
 function EventsPage() {
 const data = useLoaderData();
 
-if (data.isError) {//so if the isError is truthy. Which I dont understadn, that why react understands here the data. part. Where does it come from?
-  return <p>{data.message}</p> //than we output the message set below. okeay this as well, only that WHERE DOUS THE DATA COME FROM. AND WHY IsNT MAX MENTIONING THIS?
-}
+//if (data.isError) {//so if the isError is truthy. Which I dont understadn, that why react understands here the data. part. Where does it come from?
+ // return <p>{data.message}</p> //than we output the message set below. okeay this as well, only that WHERE DOUS THE DATA COME FROM. AND WHY IsNT MAX MENTIONING THIS?
+//}
 const events = data.events;
 
  return (

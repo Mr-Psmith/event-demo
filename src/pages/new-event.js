@@ -18,14 +18,22 @@ export async function action({ request, params }) {
   const eventData = {
     title: data.get("title"),
     image: data.get("image"),
-    date: data.get("date"),
+    date: data.get("date"), //cant add a new event, app has a problem with this line, sadly dunno what could it be 
     description: data.get("description"),
   };
 
   const response = await fetch("http://localhost:8080/events", {
     method: "POST",
+    headers: {
+      "Content-Type" : "application/json",
+    },
     body: JSON.stringify(eventData),
   });
+
+  if (response.status === 422) {
+    return response;
+  }
+
 
   if (!response.ok) {
     throw json({message: "could not save event."}, {status: 500});

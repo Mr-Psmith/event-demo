@@ -23,7 +23,7 @@
 import { RouterProvider, createBrowserRouter } from 'react-router-dom';
 
 import EditEventPage from './pages/edit-event';
-import EventDetailPage, {loader as eventDetailLoader} from './pages/event-detail';
+import EventDetailPage, {action as deleteEventAction,  loader as eventDetailLoader} from './pages/event-detail';
 import EventsPage, { loaderUpToUs as eventsLoader } from './pages/events';
 import EventsRootLayout from './pages/events-root';
 import HomePage from './pages/home';
@@ -59,7 +59,7 @@ const router = createBrowserRouter([
             //we don't add an element as we dont want any shared layouts
             loader: eventDetailLoader, //and adding here this loader makes accessible to all children elements by using the useLoaderData() hook there
             children: [
-              { index: true/*or path:""*/, element: <EventDetailPage />},
+              { index: true/*or path:""*/, element: <EventDetailPage/>, action: deleteEventAction},
               { path: 'edit', element: <EditEventPage /> },
             ],
            },
