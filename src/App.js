@@ -27,9 +27,10 @@ import EventDetailPage, {action as deleteEventAction,  loader as eventDetailLoad
 import EventsPage, { loaderUpToUs as eventsLoader } from './pages/events';
 import EventsRootLayout from './pages/events-root';
 import HomePage from './pages/home';
-import NewEventPage, { action as newEventAction } from './pages/new-event';
+import NewEventPage from './pages/new-event';
 import RootLayout from './pages/root';
 import ErrorPage from './pages/error';
+import {action as manipulateEventActions} from "./components/EventForm";
 
 const router = createBrowserRouter([
   {
@@ -60,10 +61,10 @@ const router = createBrowserRouter([
             loader: eventDetailLoader, //and adding here this loader makes accessible to all children elements by using the useLoaderData() hook there
             children: [
               { index: true/*or path:""*/, element: <EventDetailPage/>, action: deleteEventAction},
-              { path: 'edit', element: <EditEventPage /> },
+              { path: 'edit', element: <EditEventPage />, action:manipulateEventActions },
             ],
            },
-          { path: 'new', element: <NewEventPage />, action: newEventAction },
+          { path: 'new', element: <NewEventPage />, action: manipulateEventActions },
         ],
       },
     ],

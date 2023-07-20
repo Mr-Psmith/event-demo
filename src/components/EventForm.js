@@ -1,8 +1,8 @@
-import { Form, useActionData, useNavigate, useNavigation } from "react-router-dom";
+import { Form, json, redirect, useActionData, useNavigate, useNavigation } from "react-router-dom";
 
 import classes from "./EventForm.module.css";
 
-function EventForm({ method, event }) {
+function EventForm({ method, event }) { //we are using this destructured method in the reusable action below
   //extracting event prop with obj destructuring from props object
   const data = useActionData();
   const navigate = useNavigate();
@@ -15,7 +15,7 @@ function EventForm({ method, event }) {
   }
 
   return (
-    <Form method="post" className={classes.form}>
+    <Form method={method} className={classes.form}>
       {data && data.errors && <ul>
         {Object.values(data.errors).map(err => <li key={err}>{err}</li>)}
         </ul>}
@@ -70,3 +70,41 @@ function EventForm({ method, event }) {
 }
 
 export default EventForm;
+
+export async function action({ request, params }) {
+  const methodd = request.method; //we are extracting the dynamic methods this way 
+  const data = await request.formData();
+  const eventData = {
+    title: data.get("title"),
+    image: data.get("image"),
+    date: data.get("date"), //I can, only if I delete all events as I did it that time than I cant add a new [cant add a new event, app has a problem with this line, sadly dunno what could it be] 
+    description: data.get("description"),
+  };
+
+  let url = "http://localhost:8080/events"; //so normally this
+  if (methodd === "PATCH") {//but if weeee want to edit, than we use this path instead
+    const eventIdd = params.eventId; // the second eventId is bec in our route definition we chose this as a placeholder name
+    url = "http://localhost:8080/events/" + eventIdd;
+  }
+
+  const response = await fetch(url, {
+    method: methodd, // we are using a destructured method brought in upper in EventForm, and set on the different pages we are using this action one by one
+    headers: {
+      "Content-Type" : "application/json",
+    },
+    body: JSON.stringify(eventData),
+  });
+
+  if (response.status === 422) {
+    return response;
+  }
+
+
+  if (!response.ok) {
+    throw json({message: "could not save event."}, {status: 500});
+  }
+
+  return redirect("/events");
+
+}
+
