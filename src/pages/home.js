@@ -1,5 +1,11 @@
+import PageContent from "../components/page-comp";
+
 function HomePage() {
-    return <h1>HomePage</h1>;
+    return ( 
+      <PageContent title="Welcome">
+        <p>Dunno what I should write here. </p>
+      </PageContent>
+    );
   }
   
   export default HomePage;

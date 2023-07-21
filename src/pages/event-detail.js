@@ -81,6 +81,3 @@ export async function action({params, request}) {
     return redirect("/events");
   }
 }
-
-
-//git commit -m "I Await the defer in Suspense" 
