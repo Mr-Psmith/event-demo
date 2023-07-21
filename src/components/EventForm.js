@@ -16,9 +16,9 @@ function EventForm({ method, event }) { //we are using this destructured method 
 
   return (
     <Form method={method} className={classes.form}>
-      {data && data.errors && <ul>
+      {data && data.errors && (<ul>
         {Object.values(data.errors).map(err => <li key={err}>{err}</li>)}
-        </ul>}
+        </ul>)}
       <p>
         <label htmlFor="title">Title</label>
         <input
