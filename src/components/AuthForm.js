@@ -1,14 +1,18 @@
-import { useState } from 'react';
-import { Form } from 'react-router-dom';
+//import { useState } from 'react';
+import { Form, Link, useSearchParams } from 'react-router-dom';
 
 import classes from './AuthForm.module.css';
 
 function AuthForm() {
-  const [isLogin, setIsLogin] = useState(true);
+  const [searchParams] = useSearchParams();
+  const isLogin = searchParams.get("mode") === "login";
 
-  function switchAuthHandler() {
-    setIsLogin((isCurrentlyLogin) => !isCurrentlyLogin);
-  }
+  //below state based solution is being switched of for a query based one
+  // const [isLogin, setIsLogin] = useState(true);
+
+  // function switchAuthHandler() {
+  //   setIsLogin((isCurrentlyLogin) => !isCurrentlyLogin);
+  // }
 
   return (
     <>
@@ -23,9 +27,12 @@ function AuthForm() {
           <input id="password" type="password" name="password" required />
         </p>
         <div className={classes.actions}>
-          <button onClick={switchAuthHandler} type="button">
+          <Link to={`?mode${isLogin ? "signup" : "login"}`}>
             {isLogin ? 'Create new user' : 'Login'}
-          </button>
+          </Link>
+          {/* <button onClick={switchAuthHandler} type="button">
+            {isLogin ? 'Create new user' : 'Login'}
+          </button> */}
           <button>Save</button>
         </div>
       </Form>
