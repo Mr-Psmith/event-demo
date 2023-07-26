@@ -2,6 +2,7 @@ import { Await, Link, defer, json, redirect, useRouteLoaderData } from 'react-ro
 import EventItem from '../components/EventItem';
 import EventsList from '../components/EventsList';
 import { Suspense } from 'react';
+import { getAuthToken } from '../utility/auth';
 
 function EventDetailPage() {
   const {event, events} = useRouteLoaderData("event-detail");
@@ -71,8 +72,13 @@ export async function loader({request, params}) { //this is to load the event, w
 
 export async function action({params, request}) {
   const eventId = params.eventId;
+
+  const token = getAuthToken(); //imported
   const response = await fetch("http://localhost:8080/events/" + eventId, {
     method: request.method, //method: request.params is the dinamyc way, or method: "DELETE", is the hardcoded, 
+    headers: {
+      "Authorization" : "Bearer " + token//this is the format the backend is looking for
+    }
   });
 
   if (!response.ok) {

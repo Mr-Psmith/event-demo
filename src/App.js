@@ -11,6 +11,7 @@ import ErrorPage from './pages/error';
 import {action as manipulateEventActions} from "./components/EventForm";
 import NewsletterPage, {action as newsLetterAction} from './pages/newsletter';
 import AuthenticationPage, {action as authAction} from './pages/authentication';
+import {action as logoutAction } from "./pages/logout";
 
 const router = createBrowserRouter([
   {
@@ -52,6 +53,10 @@ const router = createBrowserRouter([
         path: "newsletter",
         element: <NewsletterPage />,
         action: newsLetterAction,
+      },
+      {
+        path: "logout",
+        action: logoutAction
       }
     ],
   },

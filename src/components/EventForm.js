@@ -1,6 +1,7 @@
 import { Form, json, redirect, useActionData, useNavigate, useNavigation } from "react-router-dom";
 
 import classes from "./EventForm.module.css";
+import { getAuthToken } from "../utility/auth";
 
 function EventForm({ method, event }) { //we are using this destructured method in the reusable action below
   //extracting event prop with obj destructuring from props object
@@ -87,10 +88,12 @@ export async function action({ request, params }) {
     url = "http://localhost:8080/events/" + eventIdd;
   }
 
+  const token = getAuthToken();
   const response = await fetch(url, {
     method: methodd, // we are using a destructured method brought in upper in EventForm, and set on the different pages we are using this action one by one
     headers: {
       "Content-Type" : "application/json",
+      "Authorization" : "Bearer" + token,
     },
     body: JSON.stringify(eventData),
   });

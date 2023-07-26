@@ -36,5 +36,10 @@ export async function action({request}) {
     throw json({message: "Could not authenticate user."}, {status: 500})
   }
 
+  const resData = await response.json();
+  const token= resData.token; // bec of the backend it contains the token
+
+  localStorage.setItem("token", token); // here we store the token in the local Storage, I dont know whether is this safe enogh? so cant it be manipulated this way? Read from the outside?
+
   return redirect("/");
 };
