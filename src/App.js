@@ -12,12 +12,15 @@ import {action as manipulateEventActions} from "./components/EventForm";
 import NewsletterPage, {action as newsLetterAction} from './pages/newsletter';
 import AuthenticationPage, {action as authAction} from './pages/authentication';
 import {action as logoutAction } from "./pages/logout";
+import { checkAuthLoader, tokenLoader } from "./utility/auth";
 
 const router = createBrowserRouter([
   {
     path: '/',
     element: <RootLayout />,
     errorElement: <ErrorPage />,
+    id: "root",
+    loader: tokenLoader,
     children: [
       { index: true, element: <HomePage /> },
       {
@@ -42,10 +45,10 @@ const router = createBrowserRouter([
             loader: eventDetailLoader, //and adding here this loader makes accessible to all children elements by using the useLoaderData() hook there
             children: [
               { index: true/*or path:""*/, element: <EventDetailPage/>, action: deleteEventAction},
-              { path: 'edit', element: <EditEventPage />, action:manipulateEventActions },
+              { path: 'edit', element: <EditEventPage />, action:manipulateEventActions, loader: checkAuthLoader },
             ],
            },
-          { path: 'new', element: <NewEventPage />, action: manipulateEventActions },
+          { path: 'new', element: <NewEventPage />, action: manipulateEventActions, loader: checkAuthLoader },
         ],
       },
       {path: "auth", element: <AuthenticationPage />, action: authAction},

@@ -40,6 +40,9 @@ export async function action({request}) {
   const token= resData.token; // bec of the backend it contains the token
 
   localStorage.setItem("token", token); // here we store the token in the local Storage, I dont know whether is this safe enogh? so cant it be manipulated this way? Read from the outside?
+  const expiration = new Date(); //built in obj
+  expiration.setHours(expiration.getHours() + 1); //built in method //this creates a date 1 hour in the future
+
 
   return redirect("/");
 };
