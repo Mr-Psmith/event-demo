@@ -9,10 +9,16 @@ import NewEventPage from './pages/new-event';
 import RootLayout from './pages/root';
 import ErrorPage from './pages/error';
 import {action as manipulateEventActions} from "./components/EventForm";
-import NewsletterPage, {action as newsLetterAction} from './pages/newsletter';
 import AuthenticationPage, {action as authAction} from './pages/authentication';
 import {action as logoutAction } from "./pages/logout";
 import { checkAuthLoader, tokenLoader } from "./utility/auth";
+import { Suspense, lazy } from 'react';
+//import NewsletterPage, {action as newsLetterAction} from './pages/newsletter';
+const NewsletterPage = () => lazy(import('./pages/newsletter')); // this alone is not enough, because this here is not a valid functional component, bec a function is only a valid component if it returns JSX code or something like this
+                                                                                                //This function here however, returns a promise because as I mentioned before, import actually yields a promise. which is not a valid react funct
+                                                                                                      //To solve this problem React gives us a special function which we have to wrap around this function =>lazy()
+
+
 
 const router = createBrowserRouter([
   {
@@ -54,8 +60,8 @@ const router = createBrowserRouter([
       {path: "auth", element: <AuthenticationPage />, action: authAction},
       {
         path: "newsletter",
-        element: <NewsletterPage />,
-        action: newsLetterAction,
+        element: <Suspense fallback={<p>Loading...</p>}> <NewsletterPage /></Suspense>, //lazy loading so takes time to download, therefore he wrapping with the Suspense comp
+        action: () => import('./pages/newsletter').then(module => module.action()),
       },
       {
         path: "logout",
