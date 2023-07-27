@@ -1,6 +1,14 @@
 import { json, redirect } from 'react-router-dom';
 import AuthForm from '../components/AuthForm';
 
+export function gettokenDuration() {
+  const storedExpirationDate = localStorage.getItem("expiration"); //stored expirationdate
+  const expirationDate = new Date(storedExpirationDate);
+  const now = new Date();
+  const remainingTime = expirationDate.getTime() - now.getTime(); // and this gives us the remaining time
+  return remainingTime;
+}
+
 function AuthenticationPage() {
   return <AuthForm />;
 }
@@ -42,7 +50,7 @@ export async function action({request}) {
   localStorage.setItem("token", token); // here we store the token in the local Storage, I dont know whether is this safe enogh? so cant it be manipulated this way? Read from the outside?
   const expiration = new Date(); //built in obj
   expiration.setHours(expiration.getHours() + 1); //built in method //this creates a date 1 hour in the future
-  localStorage.setItem("expiration", expiration.toISOString())
+  localStorage.setItem("expiration", expiration.toISOString());
 
 
   return redirect("/");

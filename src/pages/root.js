@@ -2,6 +2,7 @@ import { Outlet, useNavigation, useRouteLoaderData, useSubmit } from 'react-rout
 
 import MainNavigation from '../components/MainNavigation';
 import { useEffect } from 'react';
+import { gettokenDuration } from './authentication';
 
 function RootLayout() {
     // const navigation = useNavigation();
@@ -13,9 +14,16 @@ function RootLayout() {
         return;
       }
 
+      if (token === "EXPIRED") {
+        submit(null, {action:"/logout", method: "post"});
+        return;
+      }
+      const tokenDuration = gettokenDuration();
+      console.log(tokenDuration);
+
       setTimeout(() => {
-        submit(null, {action:"/logout", method: "post"})
-      }, 1 * 60 *60 * 1000) // 1*60 = 1 hour, *60 = 60seconds, *1000 thousands miliseconds, bec setTimeout expects the durations in miliseconds 
+        submit(null, {action:"/logout", method: "post"});
+      }, tokenDuration) // 1 * 60 *60 * 1000 was here before tokenDuration => 1*60 = 1 hour, *60 = 60seconds, *1000 thousands miliseconds, bec setTimeout expects the durations in miliseconds //on the other hand it is not enough to set this to one hour, as this has to be dynamic
 
     }, [token, submit]);
 
